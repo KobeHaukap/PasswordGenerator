@@ -3,13 +3,17 @@
 """
 My python password validator
 """
+
 # imports go here
 import inspect
+import csv
 
-__author__: 'Kobe Haukap'
-__version__: '1.0'
-__date__: '2023.04.06'
-__status__: 'development'
+__author__ = 'Kobe Haukap'
+__version__ = '1.0'
+__date__ ='2023.04.06'
+__status__ = 'development'
+
+class PasswordException(Exception):
 
 
 class PasswordValidator:
@@ -41,7 +45,46 @@ class PasswordValidator:
         if count >= 2:
             True
         else:
-            print(f"Password must have at least {PasswordValidator.__UPPERCASE_MIN} uppercase letters")
+            print(f"Password must have at least {PasswordValidator.__UPPERCASE_MIN} uppercase letters.")
+            return False
+
+    def __is_lowercase_valid(self):
+
+        count = sum(1 for char in self.__password if char.islower())
+
+        if self.__debug_mode:
+            print(f"{count:3d} = {inspect.currentframe().f_code.co_name}")
+
+        if count >= 2:
+            True
+        else:
+            print(f"Password must have at least {PasswordValidator.__LOWERCASE_MIN} lowercase letters.")
+            return False
+
+    def __is_digit_valid(self):
+
+        count = sum(1 for char in self.__password if char.isupper())
+
+        if self.__debug_mode:
+            print(f"{count:3d} = {inspect.currentframe().f_code.co_name}")
+
+        if count >= 2:
+            True
+        else:
+            print(f"Password must have at least {PasswordValidator.__DIGIT_MIN} digits.")
+            return False
+
+    def __is_symbol_valid(self):
+
+        count = sum(1 for char in self.__password if char.isupper())
+
+        if self.__debug_mode:
+            print(f"{count:3d} = {inspect.currentframe().f_code.co_name}")
+
+        if count >= 2:
+            True
+        else:
+            print(f"Password must have at least {PasswordValidator.__SYMBOL_MIN} special characters.")
             return False
 
     def is_valid(self, password=None):
@@ -56,16 +99,34 @@ class PasswordValidator:
             print(self)
 
         uppercase_valid = self.__is_uppercase_valid()
+        lowercase_valid = self.__is_lowercase_valid()
+        digit_valid = self.__is_digit_valid()
+        symbol_valid = self.__is_symbol_valid()
 
         if uppercase_valid:
             return True
         else:
             return False
 
+        if lowercase_valid:
+            return True
+        else:
+            return False
 
-pv = PasswordValidator(debug_mode=True)
+        if digit_valid:
+            return True
+        else:
+            return False
 
-if pv.is_valid("ADX123abc!#@"):
+        if symbol_valid:
+            return True
+        else:
+            return False
+
+
+pv = PasswordValidator(debug_mode=False)
+
+if pv.is_valid("aA"):
     print("Valid Password")
 else:
     print("Invalid Password")
