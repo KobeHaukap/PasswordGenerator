@@ -5,7 +5,7 @@ My python password validator
 
 # imports go here
 import inspect
-import csv
+import PasswordException as pe
 
 __author__ = 'Kobe Haukap'
 __version__ = '1.0'
@@ -13,24 +13,12 @@ __date__ ='2023.04.06'
 __status__ = 'development'
 
 
-class PasswordException(Exception):
-
-    def __init__(self, password, error_type, min_required, count):
-        self.log = {'password': password,
-                    'error_type': error_type,
-                    'min_required': min_required,
-                    'count': count}
-        with open('password_log.txt', 'a', newline='\n') as csvfile:
-            writer = csv.writer(csvfile, delimiter='|', quoting=csv.QUOTE_MINIMAL)
-            writer.writerow([password, error_type, min_required, count])
-
-
 class PasswordValidator:
 
-    __UPPERCASE_MIN = 2
-    __LOWERCASE_MIN = 2
-    __DIGIT_MIN = 2
-    __SYMBOL_MIN = 2
+    UPPERCASE_MIN = 2
+    LOWERCASE_MIN = 2
+    DIGIT_MIN = 2
+    SYMBOL_MIN = 2
 
     def __init__(self, debug_mode=False):
 
@@ -48,8 +36,8 @@ class PasswordValidator:
         if self.__debug_mode:
             print(inspect.currentframe().f_code.co_name, '=', count)
 
-        if count < PasswordValidator.__UPPERCASE_MIN:
-            raise PasswordException(self.__password, 'uppercase', PasswordValidator.__UPPERCASE_MIN, count)
+        if count < PasswordValidator.UPPERCASE_MIN:
+            raise pe.PasswordException(self.__password, 'uppercase', PasswordValidator.UPPERCASE_MIN, count)
 
     def __validate_lowercase(self):
 
@@ -58,8 +46,8 @@ class PasswordValidator:
         if self.__debug_mode:
             print(inspect.currentframe().f_code.co_name, '=', count)
 
-        if count < PasswordValidator.__LOWERCASE_MIN:
-            raise PasswordException(self.__password, 'lowercase', PasswordValidator.__LOWERCASE_MIN, count)
+        if count < PasswordValidator.LOWERCASE_MIN:
+            raise pe.PasswordException(self.__password, 'lowercase', PasswordValidator.LOWERCASE_MIN, count)
 
     def __validate_digit(self):
 
@@ -68,8 +56,8 @@ class PasswordValidator:
         if self.__debug_mode:
             print(inspect.currentframe().f_code.co_name, '=', count)
 
-        if count < PasswordValidator.__DIGIT_MIN:
-            raise PasswordException(self.__password, 'digit', PasswordValidator.__DIGIT_MIN, count)
+        if count < PasswordValidator.DIGIT_MIN:
+            raise pe.PasswordException(self.__password, 'digit', PasswordValidator.DIGIT_MIN, count)
 
     def __validate_symbol(self):
 
@@ -78,8 +66,8 @@ class PasswordValidator:
         if self.__debug_mode:
             print(inspect.currentframe().f_code.co_name, '=', count)
 
-        if count < PasswordValidator.__SYMBOL_MIN:
-            raise PasswordException(self.__password, 'symbol', PasswordValidator.__SYMBOL_MIN, count)
+        if count < PasswordValidator.SYMBOL_MIN:
+            raise pe.PasswordException(self.__password, 'symbol', PasswordValidator.SYMBOL_MIN, count)
 
     def is_valid(self, password):
         self.__password = password
@@ -90,22 +78,22 @@ class PasswordValidator:
 
         try:
             self.__validate_uppercase()
-        except PasswordException as e:
+        except pe.PasswordException as e:
             self.__errors.append(e)
 
         try:
             self.__validate_lowercase()
-        except PasswordException as e:
+        except pe.PasswordException as e:
             self.__errors.append(e)
 
         try:
             self.__validate_digit()
-        except PasswordException as e:
+        except pe.PasswordException as e:
             self.__errors.append(e)
 
         try:
             self.__validate_symbol()
-        except PasswordException as e:
+        except pe.PasswordException as e:
             self.__errors.append(e)
 
         if len(self.__errors) == 0:
@@ -119,28 +107,28 @@ class PasswordValidator:
 
 pv = PasswordValidator(debug_mode=False)
 
-if pv.is_valid(""):
+if pv.is_valid("abACD15!@#"):
     print("Valid Password")
 else:
     print("Invalid Password")
 
 print()
 
-if pv.is_valid(""):
+if pv.is_valid("aaD$$#16663"):
     print("Valid Password")
 else:
     print("Invalid Password")
 
 print()
 
-if pv.is_valid(""):
+if pv.is_valid("ndDHT35#!"):
     print("Valid Password")
 else:
     print("Invalid Password")
 
 print()
 
-if pv.is_valid(""):
+if pv.is_valid("aA1!"):
     print("Valid Password")
 else:
     print("Invalid Password")
