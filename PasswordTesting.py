@@ -2,8 +2,13 @@
 import PasswordException
 import PasswordValidator
 
+__author__ = 'Kobe Haukap'
+__version__ = '1.0'
+__date__ ='2023.04.06'
+__status__ = 'development'
 
-def displayErrors(pw):
+
+def display_errors(pw):
 
     print("Invalid Password")
     for e in pw.errors:
@@ -11,4 +16,5 @@ def displayErrors(pw):
               f"but yours only contained {e.log['count']}")
 
 
-    
+
+

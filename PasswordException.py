@@ -1,6 +1,11 @@
 
 import csv
 
+__author__ = 'Kobe Haukap'
+__version__ = '1.0'
+__date__ ='2023.04.06'
+__status__ = 'development'
+
 
 class PasswordException(Exception):
 
